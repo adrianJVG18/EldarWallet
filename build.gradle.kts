@@ -2,4 +2,10 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
+
+    alias(libs.plugins.hiltAndroid) apply false
+    alias(libs.plugins.jetbrainsKotlinJvm) apply false
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.kspSupport) apply false
+    alias(libs.plugins.roomSupport) apply false
 }

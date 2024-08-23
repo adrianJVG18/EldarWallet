@@ -1,4 +1,4 @@
-package com.adrian.eldarwallet
+package com.adrian.eldarwallet.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
