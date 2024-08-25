@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "EldarWallet"
 include(":app")
- 
+include(":Data")
+include(":Commons")
+include(":Domain")

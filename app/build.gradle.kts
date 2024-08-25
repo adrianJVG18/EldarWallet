@@ -4,7 +4,6 @@ plugins {
 
     alias(libs.plugins.kspSupport)
     alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.roomSupport)
 }
 
 android {
@@ -51,12 +50,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
 }
 
 dependencies {
+    implementation(project(":Commons"))
+    implementation(project(":Domain"))
+
     implementation(libs.bundles.jetpack)
     implementation(libs.bundles.jetpack.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -67,10 +66,6 @@ dependencies {
     // Hilt dependencies
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
-
-    // Room dependencies
-    implementation(libs.bundles.room)
-    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
