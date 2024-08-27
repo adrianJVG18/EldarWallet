@@ -27,6 +27,7 @@ fun SignupScaffold(
 
         when(signUpState) {
             is Response.Success -> {
+                signupViewModel.cleanSignupForm()
                 navController.popBackStack(Destination.LOGIN, false)
             }
 

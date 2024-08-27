@@ -64,10 +64,6 @@ class SignupViewModel @Inject constructor(
             when (response) {
                 is Response.Success -> {
                     _signUpState.value = Response.Success(response.data.toUiModel())
-                    authRepository.persisAuthenticatedUser(
-                        username = typedUsername,
-                        password = typedPassword
-                    )
                 }
                 is Response.Failure -> {
                     _signUpState.value = Response.Failure(response.error, response.message)
@@ -77,6 +73,14 @@ class SignupViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun cleanSignupForm() {
+        typedName = ""
+        typedLastName = ""
+        typedUsername = ""
+        typedPassword = ""
+        _signUpState.value = Response.Loading(false)
     }
 
     fun validateSignUpConditions(): Boolean {

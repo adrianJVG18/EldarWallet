@@ -10,6 +10,7 @@ import com.adrian.domain.model.request.SignInRqDto
 import com.adrian.domain.repository.AuthRepository
 import com.adrian.eldarwallet.presentation.mappers.toUiModel
 import com.adrian.eldarwallet.presentation.model.AuthUser
+import com.adrian.eldarwallet.presentation.model.UserCredentials
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

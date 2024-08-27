@@ -35,14 +35,7 @@ fun LoginScaffold(
 
         when (signInState) {
             is Response.Success -> {
-                LoginScreen(
-                    usernameInput = loginViewModel.typedUsername,
-                    passwordInput = loginViewModel.typedPassword,
-                    onUsernameChanged = { loginViewModel.updateTypedUsername(it) },
-                    onPasswordChanged = { loginViewModel.updateTypedPassword(it) },
-                    onSignUpNavigate = { navController.navigate(Destination.SIGN_UP) },
-                    onAttemptLogin = { loginViewModel.attemptLogin() }
-                )
+                // Go to Home Screen
             }
             is Response.Failure -> {
                 LoginScreen(

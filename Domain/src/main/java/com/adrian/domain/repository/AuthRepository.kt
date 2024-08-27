@@ -10,6 +10,4 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     fun authUser(credentials: SignInRqDto): Flow<Response<AuthUserRsDto>>
     fun registerUser(request: SignupUserRqDto): Flow<Response<AuthUserRsDto>>
-    fun getAuthenticatedUser(): Flow<Response<UserCredentialsRsDto>>
-    fun persisAuthenticatedUser(username: String, password: String): Flow<Response<Boolean>>
 }

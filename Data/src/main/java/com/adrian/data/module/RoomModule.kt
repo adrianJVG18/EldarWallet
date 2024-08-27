@@ -21,7 +21,7 @@ object RoomModule {
         Room.databaseBuilder(
             context = applicationContext,
             klass = AppDatabase::class.java,
-            name = "Cocktails"
+            name = "EldarDatabase"
         ).build()
 
     @Singleton

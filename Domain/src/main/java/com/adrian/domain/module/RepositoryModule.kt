@@ -17,9 +17,8 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun authService(
-        sharedPreferences: SharedPreferences,
         authDao: AuthDao
     ): AuthRepository =
-        AuthRepositoryImpl(sharedPreferences, authDao)
+        AuthRepositoryImpl(authDao)
 
 }
