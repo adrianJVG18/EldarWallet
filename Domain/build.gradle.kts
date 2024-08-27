@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    alias(libs.plugins.kspSupport)
 }
 
 android {
@@ -35,6 +37,10 @@ android {
 dependencies {
     implementation(project(":Commons"))
     implementation(project(":Data"))
+
+    // Hilt dependencies
+    implementation(libs.dagger.hilt)
+    ksp(libs.dagger.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

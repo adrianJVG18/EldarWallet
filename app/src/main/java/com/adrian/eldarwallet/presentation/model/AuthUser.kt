@@ -1,6 +1,6 @@
 package com.adrian.eldarwallet.presentation.model
 
 data class AuthUser(
-    val id: String,
+    val id: Long,
     val name: String
 )

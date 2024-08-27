@@ -8,8 +8,9 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.3"
 activityCompose = "1.9.0"
 composeBom = "2024.04.01"
-viewmodelCompose = "2.6.1"
+viewmodelCompose = "2.8.4"
 jetbrainsKotlinJvm = "1.9.0"
+navigation = "2.7.7"
 
 gson = "2.9.0"
 converterGson = "2.9.0"
@@ -19,6 +20,9 @@ room = "2.6.1"
 hilt = "2.48"
 retrofit = "2.9.0"
 coil = "2.6.0"
+hiltNavigation = "1.0.0"
+
+security = "1.1.0-alpha03"
 
 mockito = "5.1.1"
 appcompat = "1.7.0"
@@ -41,6 +45,7 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -49,7 +54,6 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-
 
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
@@ -65,6 +69,9 @@ retrofit-converter = { group = "com.squareup.retrofit2", name = "converter-gson"
 
 dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
+
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security" }
 
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
@@ -86,7 +93,8 @@ jetpack-compose = [
     "androidx-ui-graphics",
     "androidx-ui-tooling",
     "androidx-ui-tooling-preview",
-    "androidx-material3"
+    "androidx-material3",
+    "androidx-navigation"
 ]
 
 retrofit = [

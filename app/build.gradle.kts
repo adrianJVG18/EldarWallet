@@ -65,11 +65,13 @@ dependencies {
 
     // Hilt dependencies
     implementation(libs.dagger.hilt)
+    implementation(libs.androidx.hilt.navigation)
+    ksp(libs.dagger.hilt.compiler)
+
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    ksp(libs.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -48,6 +48,12 @@ dependencies {
     // Retrofit
     implementation(libs.bundles.retrofit)
 
+    // Hilt dependencies
+    implementation(libs.dagger.hilt)
+    ksp(libs.dagger.hilt.compiler)
+
+    implementation(libs.security.crypto)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

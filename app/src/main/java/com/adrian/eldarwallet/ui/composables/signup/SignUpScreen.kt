@@ -1,4 +1,4 @@
-package com.adrian.eldarwallet.ui.composables.login
+package com.adrian.eldarwallet.ui.composables.signup
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -20,40 +20,60 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.adrian.eldarwallet.ui.composables.login.PasswordTextField
 import com.adrian.eldarwallet.ui.composables.utils.HorizontallyCenteredRow
-import com.adrian.eldarwallet.ui.composables.utils.VerticallyCenteredColumn
 import com.adrian.eldarwallet.ui.theme.EldarWalletTheme
 
-/**
- * The purpose of the "Screen level" it's know how to actually "render"
- * that particular piece of Screen.
- */
 @Composable
-fun LoginScreen(
+fun SignUpScreen(
     isLoading: Boolean = false,
+    nameInput: String = "",
+    lastNameInput: String = "",
     usernameInput: String = "",
     passwordInput: String = "",
+    onNameChanged: (String) -> Unit = { },
+    onLastNameChanged: (String) -> Unit = { },
     onUsernameChanged: (String) -> Unit = { },
     onPasswordChanged: (String) -> Unit = { },
-    onAttemptLogin: () -> Unit = { },
-    onSignUpNavigate: () -> Unit = { },
+    signUpCondition: () -> Boolean = { true },
+    onAttemptSignUp: () -> Unit = { },
     requestError: String = ""
 ) {
     val focusManager = LocalFocusManager.current
 
-    VerticallyCenteredColumn(topBias = 0.75f) {
-        UsernameTextField(
+    Column {
+        Spacer(modifier = Modifier.height(16.dp))
+        HorizontallyCenteredRow {
+            Text(text = "Register a New User")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        FormTextField(
+            input = nameInput,
+            label = "Name",
+            onTextChanged = { onNameChanged.invoke(it) },
+            onKeyboardNext = { focusManager.moveFocus(FocusDirection.Down) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        FormTextField(
+            input = lastNameInput,
+            label = "Last Name",
+            onTextChanged = { onLastNameChanged.invoke(it) },
+            onKeyboardNext = { focusManager.moveFocus(FocusDirection.Down) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        FormTextField(
             input = usernameInput,
+            label = "Username",
             onTextChanged = { onUsernameChanged.invoke(it) },
-            onKeyboardNext = { focusManager.moveFocus(FocusDirection.Down)  }
+            onKeyboardNext = { focusManager.moveFocus(FocusDirection.Down) }
         )
         Spacer(modifier = Modifier.height(8.dp))
         PasswordTextField(
             input = passwordInput,
             onTextChanged = { onPasswordChanged.invoke(it) },
-            onKeyboardDone = { onAttemptLogin.invoke() }
-        )
+            onKeyboardDone = { onAttemptSignUp.invoke() })
 
+        Spacer(modifier = Modifier.height(8.dp))
         if (requestError.isNotBlank()) {
             Spacer(modifier = Modifier.height(16.dp))
             HorizontallyCenteredRow {
@@ -67,48 +87,24 @@ fun LoginScreen(
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
         HorizontallyCenteredRow {
-            Column {
-                Button(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    onClick = { onAttemptLogin.invoke() }) {
+            Button(
+                enabled = signUpCondition.invoke(),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = { onAttemptSignUp.invoke() }) {
                     Text(text = "Sign In")
                 }
-                Button(onClick = { onSignUpNavigate.invoke() }) {
-                    Text(text = "Sign Up")
-                }
-
-                if (isLoading) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .width(48.dp)
-                            .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.secondary,
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                    )
-                }
-            }
         }
-    }
-}
 
-
-@Preview(name = "Light theme", showBackground = true)
-@Preview(
-    name = "Dark theme",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
-@Composable
-private fun PreviewLoginScreen() {
-    EldarWalletTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            LoginScreen()
+        if (isLoading) {
+            Spacer(modifier = Modifier.height(16.dp))
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .width(48.dp)
+                    .align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
         }
     }
 }
@@ -119,13 +115,13 @@ private fun PreviewLoginScreen() {
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-private fun PreviewLoginScreen_Loading() {
+private fun PreviewSignupScreen() {
     EldarWalletTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            LoginScreen(isLoading = true)
+            SignUpScreen()
         }
     }
 }
@@ -136,13 +132,30 @@ private fun PreviewLoginScreen_Loading() {
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-private fun PreviewLoginScaffold_RequestError() {
+private fun PreviewSignupScreen_RequestError() {
     EldarWalletTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            LoginScreen(requestError = "Username or Password are Incorrect")
+            SignUpScreen(requestError = "All fields are Mandatory")
+        }
+    }
+}
+
+@Preview(name = "Light theme", showBackground = true)
+@Preview(
+    name = "Dark theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun PreviewSignupScreen_ShowLoading() {
+    EldarWalletTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignUpScreen(isLoading = true)
         }
     }
 }
