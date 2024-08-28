@@ -35,7 +35,8 @@ fun LoginScaffold(
 
         when (signInState) {
             is Response.Success -> {
-                // Go to Home Screen
+                navController.popBackStack()
+                navController.navigate(Destination.HOME)
             }
             is Response.Failure -> {
                 LoginScreen(
