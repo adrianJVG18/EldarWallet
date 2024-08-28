@@ -3,6 +3,7 @@ package com.adrian.data.module
 import android.content.Context
 import androidx.room.Room
 import com.adrian.data.dao.AuthDao
+import com.adrian.data.dao.CardsDao
 import com.adrian.data.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -28,4 +29,10 @@ object RoomModule {
     @Provides
     fun authDao(database: AppDatabase): AuthDao =
         database.authDao()
+
+    @Singleton
+    @Provides
+    fun cardsDao(database: AppDatabase): CardsDao =
+        database.cardsDao()
+
 }
