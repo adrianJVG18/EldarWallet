@@ -1,60 +1,41 @@
 package com.adrian.domain.encryption
 
+import java.security.MessageDigest
+import java.util.Base64
 import javax.crypto.Cipher
-import javax.crypto.SecretKeyFactory
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.PBEKeySpec
+import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
-@OptIn(ExperimentalEncodingApi::class)
 class AesEncryption : CryptoGraph {
 
-    // TODO: secret passwords and key stores it's another subject to be defined.
-    //  By the moment this is enough
     companion object {
-        private const val SECRET_KEY = "tK5UT8lIi7GVUolBxya5XVsmeDCoUl6vHhdIEkjHh0UiiUOBihvSMB6sQ="
-        private const val SALT = "QWlTlKHuygceIjn9876MkJTQWZ2bGhpV3U="
-        private const val IV = "bVQzNFNhRkQIUYV896tvNJvi1Njc4UUFaWA=="
+        // TODO Do not use in production, this should come from real authentication
+        private const val USER_TOKEN = "SomeCrypticLetters"
     }
 
+    private val secretKey: SecretKey = generateKey(USER_TOKEN)
+
     override fun encrypt(plainData: String): String {
-        try {
-            val ivParameterSpec = IvParameterSpec(Base64.decode(IV))
-            val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-            val spec = PBEKeySpec(SECRET_KEY.toCharArray(), Base64.decode(SALT), 10000, 256)
-            val tmp = factory.generateSecret(spec)
-            val secretKey = SecretKeySpec(tmp.encoded, "AES")
-
-            val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec)
-
-            return cipher.doFinal(plainData.toByteArray()).toString()
-        } catch (e: Exception) {
-            println("Error while encrypting: $e")
-        }
-        return ""
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+        val encryptedBytes = cipher.doFinal(plainData.toByteArray(Charsets.UTF_8))
+        return Base64.getEncoder().encodeToString(encryptedBytes)
     }
 
     override fun decrypt(encryptedData: String): String {
-        try {
-            val ivParameterSpec = IvParameterSpec(Base64.decode(IV))
-
-            val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-            val spec =  PBEKeySpec(SECRET_KEY.toCharArray(), Base64.decode(SALT), 10000, 256)
-            val tmp = factory.generateSecret(spec)
-            val secretKey = SecretKeySpec(tmp.encoded, "AES")
-
-            val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec)
-            return  cipher.doFinal(encryptedData.toByteArray()).toString()
-        } catch (e : Exception) {
-            println("Error while decrypting: $e");
-        }
-        return ""
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.DECRYPT_MODE, secretKey)
+        val decodedBytes = Base64.getDecoder().decode(encryptedData)
+        val decryptedBytes = cipher.doFinal(decodedBytes)
+        return String(decryptedBytes, Charsets.UTF_8)
     }
 
-
-
+    private fun generateKey(password: String): SecretKeySpec {
+        val digest: MessageDigest = MessageDigest.getInstance("SHA-256")
+        val bytes = password.toByteArray()
+        digest.update(bytes, 0, bytes.size)
+        val key = digest.digest()
+        val secretKeySpec = SecretKeySpec(key, "AES")
+        return secretKeySpec
+    }
 }

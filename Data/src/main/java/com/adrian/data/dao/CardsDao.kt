@@ -12,7 +12,7 @@ interface CardsDao {
     fun insertCard(card: Card): Long
 
     @Query("DELETE FROM ${Card.TABLE_NAME} WHERE id = :id")
-    fun deleteCardById(id: Long)
+    fun deleteCardById(id: String)
 
     @Query("""
         SELECT id, ${Card.USER_ID}, ${Card.CARD_NUMBER}, ${Card.SECURITY_CODE}, ${Card.EXPIRE_DATE} 

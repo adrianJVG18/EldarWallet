@@ -52,7 +52,7 @@ class CardsViewModel @Inject constructor(
 
     fun fetchCards() = viewModelScope.launch {
         val userId = authenticatedUser.data.id
-        cardsRepository.getCardsByUserId(userId).collectLatest { response ->
+        cardsRepository.getCardsByUserId(userId).collect { response ->
             when (response) {
                 is Response.Success -> {
                     _cards.value = Response.Success(response.data.map { it.toUiModel() })
@@ -89,6 +89,17 @@ class CardsViewModel @Inject constructor(
                 is Response.Loading -> {
 
                 }
+            }
+        }
+    }
+
+    fun deleteCard(cardId: Long) = viewModelScope.launch {
+        cardsRepository.deleteCard(cardId).collect { response ->
+            when (response) {
+                is Response.Success -> {
+                    fetchCards()
+                }
+                else -> { /* Do nothing for the moment */}
             }
         }
     }

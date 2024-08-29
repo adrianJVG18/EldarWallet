@@ -27,11 +27,6 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun cryptoGraph(): CryptoGraph =
-        AesEncryption()
-
-    @Singleton
-    @Provides
     fun cardsRepository(
          cryptoGraph: CryptoGraph,
          cardsDao: CardsDao

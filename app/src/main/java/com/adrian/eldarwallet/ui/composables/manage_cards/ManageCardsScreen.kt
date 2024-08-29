@@ -57,7 +57,7 @@ private fun ConstraintLayoutScope.FloatingAddButton(
     val (fabAddButton) = createRefs()
 
     FloatingActionButton(
-        onClick = { onAddCard },
+        onClick = { onAddCard.invoke() },
         modifier = Modifier.constrainAs(fabAddButton) {
             bottom.linkTo(parent.bottom, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)

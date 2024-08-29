@@ -46,7 +46,10 @@ fun ManageCardsScaffold(
 
             }
             is Response.Success -> {
-
+                ManageCardsScreen(
+                    cards = (cardsState as Response.Success).data,
+                    onAddCard = { navController.navigate(Destination.ADD_CARD) }
+                )
             }
         }
     }
