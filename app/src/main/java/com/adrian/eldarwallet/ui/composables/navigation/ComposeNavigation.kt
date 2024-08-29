@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.adrian.eldarwallet.ui.composables.generate_qr.GenerateQrScaffold
 import com.adrian.eldarwallet.ui.composables.home.HomeScaffold
 import com.adrian.eldarwallet.ui.composables.login.LoginScaffold
+import com.adrian.eldarwallet.ui.composables.manage_cards.AddCardScaffold
 import com.adrian.eldarwallet.ui.composables.manage_cards.ManageCardsScaffold
 import com.adrian.eldarwallet.ui.composables.signup.SignupScaffold
 import com.adrian.eldarwallet.ui.composables.start_payment.StartPaymentScaffold
@@ -42,6 +43,10 @@ fun ComposeNavigation() {
         composable(Destination.START_PAYMENT) {
             StartPaymentScaffold(navController = navController)
         }
+
+        composable(Destination.ADD_CARD) {
+            AddCardScaffold(navController = navController)
+        }
     }
 }
 
@@ -52,4 +57,5 @@ object Destination {
     const val GENERATE_QR = "GenerateQrScreen"
     const val MANAGE_CARDS = "ManageCardsScreen"
     const val START_PAYMENT = "StartPaymentScreen"
+    const val ADD_CARD = "AddCardScreen"
 }

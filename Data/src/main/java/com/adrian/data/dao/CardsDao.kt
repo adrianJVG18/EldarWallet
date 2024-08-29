@@ -9,7 +9,7 @@ import com.adrian.data.entity.Card
 interface CardsDao {
 
     @Insert
-    fun insertCard(card: Card): Card
+    fun insertCard(card: Card): Long
 
     @Query("DELETE FROM ${Card.TABLE_NAME} WHERE id = :id")
     fun deleteCardById(id: Long)

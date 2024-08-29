@@ -1,5 +1,6 @@
 package com.adrian.domain.repository.impl
 
+import android.util.Log
 import com.adrian.commons.model.Response
 import com.adrian.data.dao.CardsDao
 import com.adrian.data.entity.Card
@@ -23,8 +24,10 @@ internal class CardsRepositoryImpl @Inject constructor(
 
     }
 
-    override fun createCard(userId: Long, card: CreateCardRqDto): Flow<Response<CardRsDto>> = flow {
+    override fun createCard(userId: Long, card: CreateCardRqDto): Flow<Response<Long>> = flow {
         emit(Response.Loading(true))
+
+        Log.d("CardsRepositoryImpl", "Creating Card, starting to encrypt: ")
 
         val cardEntity = Card(
             userId = cryptoGraph.encrypt("$userId"),
@@ -33,17 +36,10 @@ internal class CardsRepositoryImpl @Inject constructor(
             expiry = cryptoGraph.encrypt(card.expiry)
         )
 
-        val inserted = cardsDao.insertCard(cardEntity)
+        Log.d("CardsRepositoryImpl", "Encrypted data: userId: $userId (${cardEntity.userId})")
 
-        inserted.id?.let {
-            val result = CardRsDto(
-                id = it,
-                number = cryptoGraph.decrypt(inserted.number ?: ""),
-                cvv = cryptoGraph.decrypt(inserted.cvv ?: "").toInt(),
-                expiry = cryptoGraph.decrypt(inserted.expiry ?: "")
-            )
-            emit(Response.Success(result))
-        }
+        val inserted = cardsDao.insertCard(cardEntity)
+        emit(Response.Success(inserted))
     }.catch {
         emit(Response.Failure(it as Exception, "Failed to Insert the Card"))
     }.flowOn(Dispatchers.IO)
@@ -52,7 +48,6 @@ internal class CardsRepositoryImpl @Inject constructor(
         emit(Response.Loading(true))
 
         cardsDao.deleteCardById(cardId)
-
         emit(Response.Success(cardId))
     }.catch {
         emit(Response.Failure(it as Exception, "Failed to Delete the Card with id {${cardId}}"))

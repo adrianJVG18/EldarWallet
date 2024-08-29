@@ -1,12 +1,12 @@
-package com.adrian.eldarwallet.ui.composables.home
+package com.adrian.eldarwallet.ui.composables.manage_cards
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,13 +24,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.adrian.eldarwallet.R
 import com.adrian.eldarwallet.presentation.model.CardItem
 import com.adrian.eldarwallet.ui.theme.EldarWalletTheme
 
 @Composable
-fun TenderCardItem(cardItem: CardItem) {
-    Row(
+fun TenderCardItem(
+    cardItem: CardItem,
+    onCardClick: (CardItem) -> Unit = { },
+    onDeleteClick: (CardItem) -> Unit = { }
+) {
+    ConstraintLayout(
         modifier = Modifier
             .padding(all = 8.dp)
             .border(
@@ -42,45 +47,63 @@ fun TenderCardItem(cardItem: CardItem) {
             )
             .fillMaxWidth()
             .wrapContentHeight()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .clickable {
+                onCardClick.invoke(cardItem)
+            }
     ) {
-        Spacer(modifier = Modifier.width(16.dp))
+        val (bank, cardNumber, expiry, deleteIcon) = createRefs()
 
-        Column {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = when (cardItem.number[0]) {
-                    '3' -> "American Express"
-                    '4' -> "Visa"
-                    '5' -> "MasterCard"
-                    else -> "Other"
-                },
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = cardItem.number,
-                fontSize = 20.sp,
-            )
-            Text(
-                text = cardItem.expiry,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.outline
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = when (cardItem.number[0]) {
+                '3' -> "American Express"
+                '4' -> "Visa"
+                '5' -> "MasterCard"
+                else -> "Other"
+            },
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.constrainAs(bank) {
+                top.linkTo(parent.top, margin = 12.dp)
+                start.linkTo(parent.start, margin = 16.dp)
+            }
+        )
+        Text(
+            text = cardItem.number,
+            fontSize = 20.sp,
+            modifier = Modifier.constrainAs(cardNumber) {
+                top.linkTo(bank.bottom, margin = 2.dp)
+                start.linkTo(parent.start, margin = 16.dp)
+            }
+        )
+        Text(
+            text = cardItem.expiry,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.constrainAs(expiry) {
+                top.linkTo(cardNumber.bottom, margin = 2.dp)
+                end.linkTo(cardNumber.end)
+                bottom.linkTo(parent.bottom, margin = 12.dp)
+            }
+        )
 
-        Column {
-            Spacer(modifier = Modifier.height(40.dp))
-            Image(
-                painter = painterResource(id = R.drawable.arrow_forward_ios_24dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline),
-                contentDescription = "Forward arrow",
-            )
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
+        Image(
+            painter = painterResource(id = R.drawable.delete_24dp),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error),
+            contentDescription = "Forward arrow",
+            modifier = Modifier
+                .width(36.dp)
+                .height(72.dp)
+                .clickable {
+                    onDeleteClick.invoke(cardItem)
+                }
+                .constrainAs(deleteIcon) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(parent.end, margin = 16.dp)
+                }
+        )
     }
 }
 
@@ -100,6 +123,7 @@ private fun PreviewAvailableCardsCard_Visa() {
         ) {
             Column {
                 TenderCardItem(cardItem = CardItem(
+                    id = 1,
                     number = "4111 2222 3333 4444",
                     cvv = 123,
                     expiry = "2027/08"
@@ -125,6 +149,7 @@ private fun PreviewAvailableCardsCard_Mastercard() {
         ) {
             Column {
                 TenderCardItem(cardItem = CardItem(
+                    id = 1,
                     number = "5111 2222 3333 4444",
                     cvv = 123,
                     expiry = "2027/08"
@@ -150,6 +175,7 @@ private fun PreviewAvailableCardsCard_Amex() {
         ) {
             Column {
                 TenderCardItem(cardItem = CardItem(
+                    id = 1,
                     number = "3111 2222 3333 4444",
                     cvv = 123,
                     expiry = "2027/08"
@@ -175,6 +201,7 @@ private fun PreviewAvailableCardsCard_Other() {
         ) {
             Column {
                 TenderCardItem(cardItem = CardItem(
+                    id = 1,
                     number = "1111 2222 3333 4444",
                     cvv = 123,
                     expiry = "2027/08"

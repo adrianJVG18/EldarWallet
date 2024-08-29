@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CardsRepository {
     fun getCardsByUserId(userId: Long) : Flow<Response<List<CardRsDto>>>
-    fun createCard(userId: Long, card: CreateCardRqDto): Flow<Response<CardRsDto>>
+    fun createCard(userId: Long, card: CreateCardRqDto): Flow<Response<Long>>
     fun deleteCard(cardId: Long) : Flow<Response<Long>>
 }
